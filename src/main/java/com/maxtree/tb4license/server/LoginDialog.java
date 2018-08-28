@@ -3,6 +3,8 @@ package com.maxtree.tb4license.server;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -27,12 +29,28 @@ public class LoginDialog extends JDialog implements ActionListener{
 	 * 
 	 */
 	public LoginDialog() {
+		this.setTitle("校验");
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		JPanel passwordPane = new JPanel();
 		passwordPane.add(passwordLabel);
 		passwordPane.add(passwordField);
 		passwordPane.add(decrypt);
 		passwordField.setPreferredSize(new Dimension(200, 25));
+		passwordField.addKeyListener(new KeyListener() {
+
+			public void keyTyped(KeyEvent e) {
+			}
+
+			public void keyPressed(KeyEvent e) {
+			}
+
+			public void keyReleased(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					verify();
+				}
+			}
+			
+		});
 		decrypt.addActionListener(this);
 		JPanel main = new JPanel();
 		main.setLayout(new VerticalFlowLayout());
@@ -52,7 +70,11 @@ public class LoginDialog extends JDialog implements ActionListener{
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		 String hashed = "$2a$04$Cl/Z7WgQeJ8HSZd/yc4qyOQ5gT5DcK9dBvneqi.JjgZS1SYgQu5uq";
+		verify();
+	}
+	
+	private void verify() {
+		String hashed = "$2a$04$Cl/Z7WgQeJ8HSZd/yc4qyOQ5gT5DcK9dBvneqi.JjgZS1SYgQu5uq";
 		 char[] chs = passwordField.getPassword();
 		// Check that an unencrypted password matches one that has
 			// previously been hashed

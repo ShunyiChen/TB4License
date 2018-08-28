@@ -8,17 +8,8 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.Date;
-import java.util.Enumeration;
-import java.util.Map;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -142,16 +133,15 @@ public class App implements ActionListener
     	JButton verify = new JButton("Verify");
     	verify.setActionCommand("verifying");
     	verify.addActionListener(this);
-    	JButton get = new JButton("Get system information");
-    	get.setActionCommand("getting");
-    	get.addActionListener(this);
+//    	JButton get = new JButton("Get system information");
+//    	get.setActionCommand("getting");
+//    	get.addActionListener(this);
     	JButton generate = new JButton("Generate");
     	generate.setActionCommand("generating");
     	generate.addActionListener(this);
     	JPanel bottom = new JPanel();
     	bottom.setLayout(new FlowLayout(FlowLayout.RIGHT));
     	
-    	bottom.add(get);
     	bottom.add(generate);
     	bottom.add(verify);
     	
@@ -166,24 +156,11 @@ public class App implements ActionListener
 	}
 	
 	public void actionPerformed(ActionEvent e) {
-		if(e.getActionCommand().equals("getting")) {
-			Getinfo getinfo = new Getinfo();
-			
-			macField.setText(getinfo.getMacAddress());
-			try {
-				ipField.setText(getinfo.getLocalHostLANAddress());
-			} catch (UnknownHostException e1) {
-				e1.printStackTrace();
-			}
-			hostField.setText(getinfo.getComputerName());
-			diskField.setText(getinfo.getDriveSerialNumber("C"));
-			motherboardField.setText(getinfo.getMotherboardSN());
-			
-		} else if(e.getActionCommand().equals("generating")) {
+		if(e.getActionCommand().equals("generating")) {
 			
 			if (!compareDates()) {
 				JOptionPane.showMessageDialog(f,
-						"Sorry, it does not look like the FromDate is earlier than the ToDate.", "null value",
+						"End date must be greater than from date.", "null value",
 						JOptionPane.INFORMATION_MESSAGE);
 				return;
 			}
@@ -222,12 +199,36 @@ public class App implements ActionListener
 	
 	/**
 	 * 
+	 */
+	public void populate() {
+		Getinfo getinfo = new Getinfo();
+		macField.setText(getinfo.getMacAddress());
+		try {
+			ipField.setText(getinfo.getLocalHostLANAddress());
+		} catch (UnknownHostException e1) {
+			e1.printStackTrace();
+		}
+		hostField.setText(getinfo.getComputerName());
+		diskField.setText(getinfo.getDriveSerialNumber("C"));
+		motherboardField.setText(getinfo.getMotherboardSN());
+	}
+	
+	/**
+	 * 
 	 * @param args
 	 */
 	public static void main(String[] args){
 		Callback callback = new Callback() {
 			public Object call(Object param) {
-				new App();
+				final App app = new App();
+				
+				Thread t = new Thread() {
+					public void run() {
+						app.populate();
+					}
+				};
+				t.start();
+				
 				return null;
 			}
 		};
