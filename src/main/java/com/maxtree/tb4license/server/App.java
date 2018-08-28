@@ -236,7 +236,7 @@ public class App implements ActionListener
 		login.showDialog(callback);
     }
 
-	private JFrame f = new JFrame("License generator v1.1");
+	private JFrame f = new JFrame("License generator v1.2");
 	private JTextField macField = new JTextField();
 	private JTextField ipField = new JTextField();
 	private JTextField hostField = new JTextField();
