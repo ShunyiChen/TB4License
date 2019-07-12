@@ -17,3 +17,11 @@ keytool -import -alias publiccert -file certfile.cer -keystore publicCerts.store
 MaxtreeKeys.store,密码Happy2016
 maxtree，密码Eagleflyhigh2018
 publicCerts.store, 密码Wonderful2018
+
+
+//============================================================
+打包命令：
+mvn assembly:assembly
+
+
+
