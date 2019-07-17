@@ -23,5 +23,6 @@ publicCerts.store, 密码Wonderful2018
 打包命令：
 mvn assembly:assembly
 
-
+需要安装
+JDK 1.8
 
