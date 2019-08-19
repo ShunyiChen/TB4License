@@ -23,5 +23,6 @@ publicCerts.store, 密码Wonderful2018
 打包命令：
 mvn assembly:assembly
 
-
+// 运行主类
+com.maxtree.tb4license.server.App
 
